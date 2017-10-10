@@ -16,16 +16,16 @@ The following is an example of a minimalist gooey program:
 
 		import (
 			"fmt"
-			   "os"
-			   "os/signal"
-			   "time"
+			"os"
+			"os/signal"
+			"time"
 
-			   "github.com/0xABAD/gooey"
+			"github.com/0xABAD/gooey"
 		)
 
 		func main() {
 			var (
-				app	   testApp
+				app    testApp
 				server gooey.Server
 				notify = make(chan os.Signal)
 				done   = make(chan struct{})
