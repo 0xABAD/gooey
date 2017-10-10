@@ -527,13 +527,13 @@ func (s *Server) reloadWebContent(updates []filewatch.Update, css, js map[string
 
 func (s *Server) infoln(args ...interface{}) {
 	if s.InfoLog != nil {
-		s.InfoLog.Println(args...)
+		s.InfoLog.Output(2, fmt.Sprintln(args...))
 	}
 }
 
 func (s *Server) errorln(args ...interface{}) {
 	if s.ErrorLog != nil {
-		s.ErrorLog.Println(args...)
+		s.ErrorLog.Output(2, fmt.Sprintln(args...))
 	}
 	if s.ErrorC != nil {
 		go func() {
