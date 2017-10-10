@@ -55,9 +55,6 @@
 
             let cnt = data.GooeyContent;
 
-            // The style and script calls have to be duplicated because for
-            // some odd reason, the 'if (script) {' statement below would
-            // report an error of not being defined!
             if (cnt.Body !== "") {
                 document.body.innerHTML = cnt.Body;
             }
