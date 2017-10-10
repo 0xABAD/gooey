@@ -15,7 +15,7 @@ b?b.innerHTML=a.CSS:(b=document.createElement("style"),b.id="gooey-reload-css-co
 (function() {
 window.gooey.OnMessage = function(msg) {
 var elt = document.getElementById('gooey-message-area');
-elt.innerText = JSON.stringify(msg);
+elt.innerText = msg;
 };
 })();
 </script>
