@@ -3,7 +3,6 @@
     const OPEN       = 1;
     const CLOSING    = 2;
     const CLOSED     = 3;
-    const SECONDS    = 1000;
 
     let location = window.location.href.substring(7);
     let socket   = new WebSocket('ws://' + location + 'gooeywebsocket');
