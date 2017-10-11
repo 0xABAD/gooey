@@ -52,12 +52,14 @@ type Server struct {
 	// is the empty string then Server will listen on "127.0.0.1:" which will allow
 	// the OS to select a random port for the connection.
 	Addr string
+
 	// The directory of where Server should serve web files from.  If WebServeDir is
 	// the empty string then Server will serve files from a created temporary directory.
 	// Server will generate index.html and favicon.ico files, dependent on the values
 	// set for IndexHtml and FavIcon fields, and place them inside this temp directory
 	// to be served.
 	WebServeDir string
+
 	// The index.html file that will be served to incoming client connections.  Note that
 	// this is the contents of the index file, not the path to some index.html file.  It
 	// it expected that these contents are embedded within the executable or loaded by
@@ -65,6 +67,7 @@ type Server struct {
 	// file and served to clients unless WebServeDir is not the empty string.  If this
 	// field is the empty string then Server will use a default index.html file.
 	IndexHtml string
+
 	// The contents of the favicon.ico that is encoded in base64.  Like IndexHtml, these
 	// are expected to be the actual favicon contents that will be written to temp file
 	// to be served unless WebServeDir is set.  If this field is the empty string then
@@ -113,20 +116,24 @@ type Server struct {
 	// If this field is set to true then the server will not automatically shutdown after
 	// the last client connection to the server is closed.
 	NoAutoShutdown bool
+
 	// If this field is set to true then the server will not open a browser tab in the
 	// users default browser on server start.  It should be noted that if this field
 	// is set to true then it might be wise to assign a custom address to the Addr
 	// field so one knows how to connect to the server.
 	NoAutoOpen bool
+
 	// A logger for the server to post informational to, essentially enabling a verbose
 	// mode.  If set to nil then no info messages will be posted.
 	InfoLog *log.Logger
+
 	// A logger for the server to post runtime error messages to.  If set to nil then
 	// no error messages will be posted.  Note that the errors posted to this logger
 	// are not the same that returned from the Start method, as those are initialization
 	// errors and the server can not start.  These errors are runtime errors that are
 	// not necessarily fatal to the server (e.g. a websocket WritMessage error).
 	ErrorLog *log.Logger
+
 	// A channel, if non nil, will be passed any runtime errors that are encountered
 	// during server operation.  These errors are the exact same that are passed to
 	// ErrorLog.  Note that these two fields are not mutually exclusive as any error
