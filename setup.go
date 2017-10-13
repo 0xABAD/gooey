@@ -23,7 +23,9 @@ func main() {
 		default:
 			fmt.Println("Unrecognized setup command:", os.Args[1])
 		}
-	} 
+	} else {
+		fmt.Println("No sub command given.")
+	}
 }
 
 const FAVICON_GO = `package %s
