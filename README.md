@@ -80,6 +80,30 @@ Of course, all of this functionality may be configured through the
 `gooey.Server struct`.  See the 
 [documentation](https://godoc.org/github.com/0xABAD/gooey) for more.
 
+
+Setup Tool
+----------
+
+Gooey comes with a setup tool that commands that may aid in development:
+
+- **local** `go run setup.go local`: This command will convert gooey to be installed
+as a local package.  This is for those don't want to put their project on their *gopath*
+and want to pin down certain versions for their dependenices.  When run this command will
+transform the imports of its sub packages that it uses to be relative local imports (i.e.
+use "./filewatch" instead "github.com/0xABAD/gooey/filewatch").  This commands needs
+to be run inside the gooey directory.
+
+- **gopath** `go run setup.go gopath`: The inverse of the *local* command as it will
+convert relative local imports to those that refer to the gopath.  This commands needs
+to be run inside the gooey directory.
+
+- **favicon** `go run setup.go favicon FILE PACKAGE_NAME`: This will create a
+file named `favicon.go` that contains `const FAVICON string` where the value is
+the contents of **FILE** encoded in base64.  The file will placed under the package
+designated by **PACKAGE_NAME**.  The `favicon.go` will be created in the directory
+of where this command is run.  You can assign the `FAVICON` string as a value to
+the `FavIcon` field in the `gooey.Server` struct.
+
 LICENSE
 -------
 
