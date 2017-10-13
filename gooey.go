@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -112,6 +113,11 @@ type Server struct {
 	//   </script>
 	// </head>
 	ReloadWatchDir string
+
+	// If ReloadWatchDir is not the empty then  gooey will ignore all files
+	// that match any of these patterns.  That match algorithm used is the
+	// same as specified in path.Match.
+	ReloadIgnorePatterns []string
 
 	// If this field is set to true then the server will not automatically shutdown after
 	// the last client connection to the server is closed.
@@ -460,6 +466,20 @@ func (s *Server) reloadWebContent(updates []filewatch.Update, css, js map[string
 	var jsUpdate, cssUpdate bool
 
 	for _, u := range updates {
+		ignore := false
+		for _, pattern := range s.ReloadIgnorePatterns {
+			match, err := path.Match(pattern, filepath.Base(u.AbsPath))
+			if err != nil {
+				s.errorln("Failed to match pattern", pattern, "for path", u.AbsPath, "--", err)
+			} else if match {
+				ignore = true
+				break
+			}
+		}
+		if ignore {
+			continue
+		}
+
 		if strings.HasSuffix(u.AbsPath, "body.html") {
 			if u.WasRemoved {
 				update.Body = "<div></div>"
