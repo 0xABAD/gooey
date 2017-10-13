@@ -14,11 +14,11 @@ func main() {
 	if len(os.Args) >= 2 {
 		switch os.Args[1] {
 		case "favicon":
-			if len(os.Args) < 3 {
-				fmt.Println("USAGE: setup favicon file")
-				fmt.Println(`    Where "file" is the path of favicon.ico file to generate.`)
+			if len(os.Args) < 4 {
+				fmt.Println("USAGE: setup favicon FILE PACKAGE_NAME")
 			} else {
-				favgen(os.Args[2])
+				packageName = os.Args[3]
+				favgen(os.Args[2], packageName)
 			}
 		default:
 			fmt.Println("Unrecognized setup command:", os.Args[1])
@@ -26,8 +26,7 @@ func main() {
 	} 
 }
 
-const FAVICON_GO = `
-package gooey
+const FAVICON_GO = `package %s
 
 // This file is generated.  Do not modify.
 
@@ -38,7 +37,7 @@ const FAVICON = "%s"
 // Takes the web/favicon.ico file, encodes it to a base 64 string,
 // and outputs to generated server/favicon.go file to be embedded
 // in the binary.
-func favgen(faviconPath string) {
+func favgen(faviconPath, packageName string) {
 	fav, err := ioutil.ReadFile(faviconPath)
 	if err != nil {
 		log.Fatalf("Failed to read %s file -- %s", faviconPath, err)
@@ -50,5 +49,5 @@ func favgen(faviconPath string) {
 	defer out.Close()
 
 	str := base64.StdEncoding.EncodeToString(fav)
-	fmt.Fprintf(out, FAVICON_GO, str)
+	fmt.Fprintf(out, FAVICON_GO, packageName, str)
 }
