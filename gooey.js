@@ -49,9 +49,6 @@
                         data.GooeyMessage === 'gooey-server-reload-content');
 
         if (doReload) {
-            console.clear();
-            console.log("[GOOEY] Hot reload.");
-
             let cnt = data.GooeyContent;
 
             if (cnt.Body !== "") {
