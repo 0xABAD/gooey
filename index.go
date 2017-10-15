@@ -25,7 +25,7 @@ elt.innerText = msg;
 <div>
 <h3>Last Received Gooey Message:</h3>
 <div id="gooey-message-area"></div>
-<div>
+</div>
 </body>
 </html>
 `
