@@ -48,11 +48,26 @@
                         data.hasOwnProperty('GooeyContent') &&
                         data.GooeyMessage === 'gooey-server-reload-content');
 
+        function reloadJS(code) {
+            // Unlike a style tag, we can't just replace the inner HTML
+            // of the current script tag and have it reload.  Instead,
+            // yank it out of the DOM and put it back in.
+            let script = document.createElement('script');
+            script.id = "gooey-reload-js-content";
+            script.innerHTML = code;
+            document.head.appendChild(script);
+        }
+
         if (doReload) {
             let cnt = data.GooeyContent;
 
             if (cnt.Body !== "") {
                 document.body.innerHTML = cnt.Body;
+                let script = document.getElementById("gooey-reload-js-content");
+                if (script) {
+                    document.head.removeChild(script);
+                    reloadJS(script.innerHTML);
+                }
             }
             if (cnt.CSS !== "") {
                 let style = document.getElementById("gooey-reload-css-content");
@@ -70,13 +85,7 @@
                 if (script) {
                     document.head.removeChild(script);
                 }
-                // Unlike a style tag, we can't just replace the inner HTML
-                // of the current script tag and have it reload.  Instead,
-                // yank it out of the DOM and put it back in.
-                script = document.createElement('script');
-                script.id = "gooey-reload-js-content";
-                script.innerHTML = cnt.Javascript;
-                document.head.appendChild(script);
+                reloadJS(cnt.Javascript);
             }
         } else {
             gooey.OnMessage(data);
