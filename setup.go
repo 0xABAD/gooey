@@ -29,7 +29,7 @@ func main() {
 			if len(os.Args) < 4 {
 				fmt.Println("USAGE: setup favicon FILE PACKAGE_NAME")
 			} else {
-				packageName = os.Args[3]
+				packageName := os.Args[3]
 				favgen(os.Args[2], packageName)
 			}
 
