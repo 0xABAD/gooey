@@ -382,7 +382,7 @@ func (server *Server) connect(conn *websocket.Conn, done <-chan struct{}, onClos
 					}
 				}
 			} else {
-				read <- msg
+				incoming <- msg
 			}
 		}
 	})()
@@ -413,9 +413,6 @@ func (server *Server) connect(conn *websocket.Conn, done <-chan struct{}, onClos
 			conn.Close()
 			onClose <- struct{}{}
 			return
-
-		case msg := <-read:
-			incoming <- msg
 
 		case content := <-outgoing:
 			send(content)
