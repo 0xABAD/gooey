@@ -4,8 +4,8 @@
     const CLOSING    = 2;
     const CLOSED     = 3;
 
-    let location = window.location.href.substring(7);
-    let socket   = new WebSocket('ws://' + location + 'gooeywebsocket');
+    let location = window.location.origin.substring(7);
+    let socket   = new WebSocket('ws://' + location + '/gooeywebsocket');
     let gooey    = undefined;
 
     // Refer to gooey instead of window.gooey for better minification.
