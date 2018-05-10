@@ -324,7 +324,6 @@ func (server *Server) monitorClients(done <-chan struct{}, onOpen <-chan *websoc
 
 func (server *Server) connect(conn *websocket.Conn, done <-chan struct{}, onClose chan<- struct{}, app App) {
 	var (
-		read     = make(chan []byte)
 		stop     = make(chan struct{})
 		reload   = make(chan interface{})
 		incoming = make(chan []byte)
