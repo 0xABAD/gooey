@@ -24,6 +24,9 @@
             }
         };
         gooey.IsDisconnected = false;
+        gooey.OnOpen = function() {
+            console.log('[GOOEY] Websocket connection is open.');
+        };
         gooey.OnDisconnect = function() {
             console.error('[GOOEY] Disconnected from server.');
         };
@@ -41,6 +44,11 @@
             gooey.OnDisconnect();
         }
     }, 1500);
+
+    socket.addEventListener('open', function() {
+        gooey.IsDisconnected = false;
+        gooey.OnOpen();
+    });
 
     socket.addEventListener('message', function(wsevt) {
         let data     = JSON.parse(wsevt.data);
