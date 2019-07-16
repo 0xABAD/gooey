@@ -19,8 +19,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/0xABAD/gooey/filewatch"
-	"github.com/0xABAD/gooey/websocket"
+	"github.com/0xABAD/filewatch"
+	"github.com/gorilla/websocket"
 )
 
 // App provides a means sending and receiving websocket messages to connected clients.

@@ -1,0 +1,6 @@
+github.com/0xABAD/filewatch v0.1.3 h1:XqScYbGbvWm8wIZa4H0YyWsWraaOhIelG4PbvD+t34I=
+github.com/0xABAD/filewatch v0.1.3/go.mod h1:uEW3V/ufJiZZ5EabMfrCcMn6cidEczFOKZySV7HJPcc=
+github.com/0xABAD/filewatch v1.0.0 h1:U6rWhIEaJ2X2dzNvB0Vk/8ZR3vX0MFskwC/nm0WmIMc=
+github.com/0xABAD/filewatch v1.0.0/go.mod h1:n3X37U/znVifA+unmoZJ7qdyZA/Y0mVtPhckFE2wHdk=
+github.com/gorilla/websocket v1.4.0 h1:WDFjx/TMzVgy9VdMMQi2K2Emtwi2QcUQsztZ/zLaH/Q=
+github.com/gorilla/websocket v1.4.0/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoAMk2YaljkQ=
