@@ -75,6 +75,28 @@ type Server struct {
 	// a default gooey favicon will be used.
 	FavIcon string
 
+	// Set ForceIndexAndFavIcon to true to have both custom (or default) IndexHtml/FavIcon
+	// along with serving content from WebServeDir.  This combination of flags may come
+	// across confusing so refer to the following to decide what is needed:
+	//
+	//     - Use the default index page and favicon that comes with Gooey and nothing else.
+	//       * Set WebServeDir, IndexHtml, and FavIcon to the empty string.
+	//       * Set ForceIndexAndFavIcon to false
+	//     - Use a custom index page and/or a custom favicon.
+	//       * Set IndexHtml and/or FavIcon to the desired strings.
+	//       * Set WebServeDir to the empty string.
+	//       * Set ForceIndexAndFavIcon to false.
+	//     - Use a specified directory for all content.
+	//       * Set WebServeDir to the specified directory.
+	//       * Any value for IndexHtml and FavIcon (they're ignored now).
+	//       * Set ForceIndexAndFavIcon to false.
+	//     - Use a custom (or Gooey default) index page and/or favicon but also serve
+	//       additional content from a specified directory.
+	//       * Set IndexHtml and FavIcon to the desired values.
+	//       * Set WebServeDir to the extra content directory path.
+	//       * Set ForceIndexAndFavIcon to true.
+	ForceIndexAndFavIcon bool
+
 	// Specifies a directory whose contents will be watched (recursively) for changes and
 	// when a change is detected then a special message will be sent to the client to
 	// reload the page contents.  If this field is the empty string then no hot reloading
@@ -196,12 +218,13 @@ func (server *Server) Start(done <-chan struct{}, app App) error {
 		favstr = server.FavIcon
 	}
 	favicon, err := base64.StdEncoding.DecodeString(favstr)
+	favpath := ""
 	if err != nil {
 		server.errorln("Failed to decode favicon --", err)
 	} else {
 		// If this fails then we move on as it's not the end of the world
 		// if we are missing the favicon.
-		favpath := filepath.Join(dir, "favicon.ico")
+		favpath = filepath.Join(dir, "favicon.ico")
 		if err := ioutil.WriteFile(favpath, favicon, os.FileMode(0644)); err != nil {
 			server.errorln("Failed to create favicon in temp directory --", err)
 		}
@@ -211,7 +234,24 @@ func (server *Server) Start(done <-chan struct{}, app App) error {
 		exec.Command(BROWSE, redirect.name()).Start()
 	})
 
-	if server.WebServeDir != "" {
+	if server.ForceIndexAndFavIcon {
+		http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+			p := r.URL.Path
+			if !strings.HasPrefix(p, "/") {
+				p = "/" + p
+			}
+			if p == "/" || p == "/index.html" {
+				http.ServeFile(rw, r, dir)
+			} else if p == "/favicon.ico" {
+				http.ServeFile(rw, r, favpath)
+			} else if server.WebServeDir != "" {
+				fp := filepath.Join(server.WebServeDir, path.Clean(p))
+				http.ServeFile(rw, r, fp)
+			} else {
+				http.ServeFile(rw, r, dir)
+			}
+		})
+	} else if server.WebServeDir != "" {
 		http.Handle("/", http.FileServer(http.Dir(server.WebServeDir)))
 	} else {
 		http.Handle("/", http.FileServer(http.Dir(dir)))
